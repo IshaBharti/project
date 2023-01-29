@@ -1,7 +1,8 @@
 import axios from "axios"
 import {toast} from "../../utils/Toats"
-import SignUp from "./SignUp";
+import SignUp from "../component/SignUp";
 import UserDetails from "./UserDetails"
+import { Navigate } from "react-router-dom";
 
 // REGISTRATION
 export function registerApi(data) {
@@ -10,7 +11,7 @@ let basePath=process.env.REACT_APP_API_URL
 
     return new Promise((resolve, reject) =>
       axios
-        .post(`${basePath}/api/v1/users/register`, data)
+        .post(`${basePath}/user/register`, data)
         .then(function (response) {
           console.log('response', response)
           if (response?.data?.user_id !== "") {
@@ -29,6 +30,30 @@ let basePath=process.env.REACT_APP_API_URL
         })
     );
   }
+  // LOGIN
+export function   login(data){
+  let basePath=process.env.REACT_APP_API_URL
+
+  return new Promise((resolve, reject) =>
+  axios
+  .post(`${basePath}/user/login`, data)
+  .then(function (response) {
+    console.log('response', response)
+    if (response?.data?.user_id !== "") {
+      localStorage.setItem("user", JSON.stringify(response.data));
+    } else {
+      console.error(response);
+    }
+    resolve(response);
+    toast.success(response?.data?.message);
+  })
+  .catch(async (error) => {
+    console.log("errro", await error?.response);
+    toast.error(error?.response?.data?.message);
+  })
+  );
+
+}
   // GET USER DETAILS
 export function getUserData() {
 

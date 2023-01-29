@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { registerAsync } from "./authSlice";
+import { registerAsync } from "../auth/authSlice";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
@@ -20,12 +20,16 @@ import {
   CRow,
 } from "@coreui/react";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "../../../src/utils/Toats";
+import { toast } from "../../utils/Toats";
 
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
+import { useNavigate } from 'react-router-dom';
+
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,11 +48,8 @@ const SignUp = () => {
     role: "student",
     socialType: "Default",
   };
-  console.log(registerData, "REGISTRATION");
-
-
   const handleSubmit = (e) => {
-    console.log("object",registerData)
+    console.log("object", registerData)
     e.preventDefault();
     if (validation()) {
       dispath(registerAsync({ postData: registerData }));
@@ -83,19 +84,13 @@ const SignUp = () => {
           <CRow className="justify-content-center ">
             <CCol md="6">
               <CCardGroup>
-               
-                {/* <CCard
-                  className="text-white py-4 login-img"
-                  style={{ width: "44%" }} >
-                   
-                  </CCard> */}
-               
+
                 <CCard className="container">
-                
+
                   <CCardBody>
                     <CForm onSubmit={handleSubmit}>
                       <h1 className="text-center mt-4">Welocme</h1>
-                     
+
                       <CInputGroup className="mb-3">
                         <CInputGroupText></CInputGroupText>
                         <CFormInput
@@ -143,19 +138,17 @@ const SignUp = () => {
                         />
                       </CInputGroup>
 
-                      
-                      <CCol >
-                      <Link to="/dashboard" className="btn btn-primary" onClick={handleSubmit}>Login</Link>
 
+                      <CCol >
+                        <Link
+                          to="/dashboard"
+                          className="text-login ml=9"
+                        >
+                          <CButton color="link">Login</CButton>
+                        </Link>
+                        <Link to="/password-reset" className="text-login"></Link>
                         <div className="clm-btn text-center">
-                          {/* <CButton
-                            color="primary"
-                            className="btn btn-primary btn-lg"
-                            
-                            onClick={handleSubmit}
-                          >
-                            Login
-                          </CButton> */}
+
 
                           <Link
                             to="/forgotpassword"
@@ -163,7 +156,7 @@ const SignUp = () => {
                           >
                             <CButton color="link"> Forgot password?</CButton>
                           </Link>
-                          <Link to="/register" className="text-login"></Link>
+                          <Link to="/password-reset" className="text-login"></Link>
                         </div>
                       </CCol>
                     </CForm>
